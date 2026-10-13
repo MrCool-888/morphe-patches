@@ -11,8 +11,8 @@ import app.morphe.patcher.patch.bytecodePatch
 @Suppress("unused")
 val disableSignatureCheckPatch = bytecodePatch {
     execute {
-        // Let's just remove the System.exit call
-        SignatureCheckFingerprint.apply {
+        // Already-patched APKs no longer contain this exit call.
+        SignatureCheckFingerprint.matchOrNull()?.apply {
             val exitIndex = this.instructionMatches.first().index
             this.method.removeInstruction(exitIndex)
         }
